@@ -4,8 +4,6 @@ MAINTAINER LSIT Systems <lsitops@lsit.ucsb.edu>
 
 USER root
 
-#RUN mamba install -y astropy <libraries>
-
-#RUN pip install <libraries>
+RUN pip install numpy scipy matplotlib pandas
 
 USER $NB_USER

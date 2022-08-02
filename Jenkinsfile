@@ -4,7 +4,7 @@ pipeline {
         upstream(upstreamProjects: 'UCSB-PSTAT GitHub/jupyter-base/main', threshold: hudson.model.Result.SUCCESS)
     }
     environment {
-        IMAGE_NAME = '<COURSE/IMAGE ID HERE>'
+        IMAGE_NAME = 'pstat160b'
     }
     stages {
         stage('Build Test Deploy') {
@@ -19,7 +19,7 @@ pipeline {
                 }
                 stage('Test') {
                     steps {
-                        //sh 'podman run -it --rm localhost/$IMAGE_NAME python -c "import <library>;"'
+                        //sh 'podman run -it --rm localhost/$IMAGE_NAME python -c "import numpy; from numpy import linalg; import scipy.linalg; import random; import numpy.random; import matplotlib; from matplotlib import pyplot; import pandas"'
                         sh 'podman run -d --name=$IMAGE_NAME --rm -p 8888:8888 localhost/$IMAGE_NAME start-notebook.sh --NotebookApp.token="jenkinstest"'
                         sh 'sleep 10 && curl -v http://localhost:8888/lab?token=jenkinstest 2>&1 | grep -P "HTTP\\S+\\s200\\s+[\\w\\s]+\\s*$"'
                         sh 'curl -v http://localhost:8888/tree?token=jenkinstest 2>&1 | grep -P "HTTP\\S+\\s200\\s+[\\w\\s]+\\s*$"'
